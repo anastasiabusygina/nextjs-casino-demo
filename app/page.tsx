@@ -71,7 +71,13 @@ export default function Home() {
             Read our docs
           </a>
         </div>
+        
+        {/* Casino Game Demo */}
+        <div className="mt-8 flex justify-center">
+          <CoinTossGame />
+        </div>
       </main>
+      
       <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
@@ -119,11 +125,6 @@ export default function Home() {
           Go to nextjs.org →
         </a>
       </footer>
-    </div>
-    
-    {/* Casino Game Demo */}
-    <div className="mt-8 flex justify-center">
-      <CoinTossGame />
     </div>
           </BetSwirlSDKProvider>
         </OnchainKitProvider>
