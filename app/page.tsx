@@ -1,7 +1,28 @@
+'use client'
+
 import Image from "next/image";
+import { createConfig, http } from 'wagmi'
+import { base } from 'wagmi/chains'
+import { WagmiProvider } from 'wagmi'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { OnchainKitProvider } from '@coinbase/onchainkit'
+import { BetSwirlSDKProvider } from '@chainhackers/ui'
+import { CoinTossGame } from '@chainhackers/ui'
+import '@chainhackers/ui/styles.css'
+
+const config = createConfig({
+  chains: [base],
+  transports: { [base.id]: http() },
+})
+
+const queryClient = new QueryClient()
 
 export default function Home() {
   return (
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <OnchainKitProvider chain={base}>
+          <BetSwirlSDKProvider initialChainId={8453}>
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <Image
@@ -99,5 +120,14 @@ export default function Home() {
         </a>
       </footer>
     </div>
+    
+    {/* Casino Game Demo */}
+    <div className="mt-8 flex justify-center">
+      <CoinTossGame />
+    </div>
+          </BetSwirlSDKProvider>
+        </OnchainKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }
