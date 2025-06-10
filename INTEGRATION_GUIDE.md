@@ -81,22 +81,33 @@ const config = createConfig({
 const queryClient = new QueryClient()
 ```
 
-### Шаг 4: Оборачивание в провайдеры
+### Шаг 4: Правильная иерархия Web3 провайдеров
 
-Оберните весь JSX в необходимые Web3 провайдеры:
+**ВАЖНО**: Провайдеры должны быть в строго определенном порядке для корректной работы:
 
 ```tsx
 export default function Home() {
   return (
-    <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>
-        <OnchainKitProvider chain={base}>
-          <BetSwirlSDKProvider initialChainId={8453}>
-            {/* Ваш существующий JSX */}
+    <WagmiProvider config={config}>                    {/* 1. Основа Web3 */}
+      <QueryClientProvider client={queryClient}>       {/* 2. Кеширование данных */}
+        <OnchainKitProvider chain={base}>              {/* 3. Coinbase UI для Base */}
+          <BetSwirlSDKProvider initialChainId={8453}>  {/* 4. Casino функции */}
             
-            {/* Добавьте casino компонент где нужно */}
-            <div className="mt-8 flex justify-center">
-              <CoinTossGame />
+            {/* ВСЕ ваши компоненты должны быть ВНУТРИ всех провайдеров */}
+            <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+              <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+                {/* Ваш обычный Next.js контент */}
+                <Image src="/next.svg" alt="Next.js logo" width={180} height={38} priority />
+                
+                {/* Casino игры размещайте внутри main */}
+                <div className="mt-8 flex justify-center">
+                  <CoinTossGame />
+                </div>
+              </main>
+              
+              <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
+                {/* Ваш футер */}
+              </footer>
             </div>
             
           </BetSwirlSDKProvider>
@@ -106,6 +117,26 @@ export default function Home() {
   );
 }
 ```
+
+### Почему именно такой порядок провайдеров?
+
+1. **WagmiProvider** (самый внешний)
+   - Предоставляет базовые Web3 функции: подключение кошельков, взаимодействие с блокчейном
+   - Должен быть первым, так как все остальные провайдеры зависят от него
+
+2. **QueryClientProvider** (второй)
+   - Управляет кешированием и синхронизацией данных блокчейна
+   - Wagmi v2 требует TanStack Query как обязательную зависимость
+
+3. **OnchainKitProvider** (третий)
+   - Предоставляет UI компоненты и утилиты от Coinbase для Base сети
+   - Строится поверх Wagmi и React Query
+
+4. **BetSwirlSDKProvider** (самый внутренний)
+   - Специфичные для приложения casino функции
+   - Зависит от всей Web3 инфраструктуры выше
+
+**КРИТИЧНО**: Компоненты casino игр (CoinTossGame, DiceGame и др.) должны быть размещены ВНУТРИ всех провайдеров!
 
 ### Размещение компонента
 
