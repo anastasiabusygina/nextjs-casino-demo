@@ -9,15 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@chainhackers/ui": "^0.0.17",
-    "@coinbase/onchainkit": "^0.38.13",
-    "@tanstack/react-query": "^5.80.6",
-    "decimal.js": "^10.5.0",
+    "@avditte/ui": "^0.0.18",
     "next": "15.3.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "viem": "^2.31.0",
-    "wagmi": "^2.15.6"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

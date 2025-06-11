@@ -6,9 +6,9 @@ import { base } from 'wagmi/chains'
 import { WagmiProvider } from 'wagmi'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { OnchainKitProvider } from '@coinbase/onchainkit'
-import { BetSwirlSDKProvider } from '@chainhackers/ui'
-import { CoinTossGame } from '@chainhackers/ui'
-import '@chainhackers/ui/styles.css'
+import { BetSwirlSDKProvider } from '@avditte/ui'
+import { CoinTossGame } from '@avditte/ui'
+import '@avditte/ui/styles.css'
 
 const config = createConfig({
   chains: [base],
